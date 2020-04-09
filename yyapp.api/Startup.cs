@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using yyapp.api.Data;
 
 namespace yyapp
@@ -31,6 +34,19 @@ namespace yyapp
            services.AddDbContext<DataContext>(X=>X.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(Options=>{
+                Options.TokenValidationParameters= new TokenValidationParameters{
+                    ValidateIssuerSigningKey= true,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.ASCII.GetBytes
+                    (Configuration.GetSection("AppSettings:Token").Value)),               
+                    ValidateIssuer=false,
+                    ValidateAudience= false
+                };
+
+            });
+            
         
         }
 
@@ -48,6 +64,7 @@ namespace yyapp
 
            // app.UseHttpsRedirection();
           app.UseCors(X=>X.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
