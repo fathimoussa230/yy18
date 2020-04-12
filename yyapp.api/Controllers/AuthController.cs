@@ -43,8 +43,9 @@ namespace yyapp.api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-
-            var userFromRepo = await _repo.Login(userForLoginDto.username.ToLower(), userForLoginDto.password);
+            
+                // throw new Exception("API Says N0000!");
+              var userFromRepo = await _repo.Login(userForLoginDto.username.ToLower(), userForLoginDto.password);
             if (userFromRepo == null) return Unauthorized();
             var calims = new[]{
 
@@ -66,7 +67,12 @@ namespace yyapp.api.Controllers
             var token = tokenHandler.CreateToken(tokenDescripror);
             return Ok(new {
                 token=tokenHandler.WriteToken(token)
-            });
+            });   
+           
+        
+            
+
+           
         }
 
     }
