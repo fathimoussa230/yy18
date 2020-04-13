@@ -2,7 +2,14 @@
 
 @import  "../node_modules/bootstrap-v4-rtl/dist/css/bootstrap-rtl.css";
 /*@import  "../node_modules/bootstrap/dist/css/bootstrap.min.css";*/
+@import "~bootswatch/dist/Lumen/bootstrap.min.css";
 @import  "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "~alertifyjs/build/css/themes/bootstrap.min.css";
+@import "~alertifyjs/build/css/alertify.min.css";
+
+@import url("assets/myStyles.css");
+
+
 
 /*
 @import  "~/bootstrap/dist/css/bootstrap.min.css";
